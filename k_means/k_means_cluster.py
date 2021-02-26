@@ -1,11 +1,10 @@
-#!/usr/bin/python 
+#!/usr/bin/python
 
-""" 
+"""
     Skeleton code for k-means clustering mini-project.
 """
 
-
-
+#%%
 
 import pickle
 import numpy
@@ -40,31 +39,38 @@ def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature
 
 ### load in the dict of dicts containing all the data on each person in the dataset
 data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r") )
-### there's an outlier--remove it! 
+### there's an outlier--remove it!
 data_dict.pop("TOTAL", 0)
 
 
-### the input features we want to use 
-### can be any key in the person-level dictionary (salary, director_fees, etc.) 
+### the input features we want to use
+### can be any key in the person-level dictionary (salary, director_fees, etc.)
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
 poi  = "poi"
-features_list = [poi, feature_1, feature_2]
+features_list = [poi, feature_1, feature_2, 'total_payments']
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
 
-### in the "clustering with 3 features" part of the mini-project,
-### you'll want to change this line to 
-### for f1, f2, _ in finance_features:
-### (as it's currently written, the line below assumes 2 features)
-for f1, f2 in finance_features:
-    plt.scatter( f1, f2 )
+## in the "clustering with 3 features" part of the mini-project,
+## you'll want to change this line to
+## for f1, f2, _ in finance_features:
+## (as it's currently written, the line below assumes 2 features)
+for f1, f2,_ in finance_features:
+    plt.scatter( f1, f2)
+    # plt.scatter( f1, f3)
+    # plt.scatter( f2, f3)
 plt.show()
 
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
 
+from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=2)
+
+pred = kmeans.fit_predict(finance_features)
+print(kmeans.cluster_centers_)
 
 
 
@@ -74,3 +80,58 @@ try:
     Draw(pred, finance_features, poi, mark_poi=False, name="clusters.pdf", f1_name=feature_1, f2_name=feature_2)
 except NameError:
     print "no predictions object named pred found, no clusters to plot"
+
+
+
+
+
+def min_max(values):
+    values = sorted(values)
+    indices = [0, len(values)-1]
+    for idx in indices:
+        print(values[idx])
+
+stock = []
+for key in data_dict.keys():
+    if data_dict[key]['exercised_stock_options'] != 'NaN':
+        stock.append(data_dict[key]['exercised_stock_options'])
+    # print(data_dict[key]['exercised_stock_options'])
+
+min_max(stock)
+
+salary = []
+for key in data_dict.keys():
+    if data_dict[key]['salary'] != 'NaN':
+        salary.append(data_dict[key]['salary'])
+    # print(data_dict[key]['salary'])
+
+min_max(salary)
+
+print('scaled salary',float(200000 - 477)/(1111258-477))
+print('scaled stock',float(1000000 - 3285)/(34348384-3285))
+
+
+
+#%%
+
+# from sklearn.preprocessing import MinMaxScaler
+# scale = MinMaxScaler()
+# scale.fit(stock)
+# print(scale.transform(stock))
+
+# scale.fit(salary)
+# print(scale.transform(salary))
+
+# def featureScaling(arr):
+#     values = []
+#     minV = min(data)
+#     maxV = max(data)
+#     diff = float(maxV - minV)
+
+#     if diff !=0:
+#         for i in range(len(data)):
+#             values.append(float(data[i] - minV)/diff)
+#     return values
+
+# print(np.array(stock))
+

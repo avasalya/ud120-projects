@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#%%
+
+# #!/usr/bin/python
 
 import matplotlib.pyplot as plt
 from prep_terrain_data import makeTerrainData
@@ -25,17 +27,57 @@ plt.legend()
 plt.xlabel("bumpiness")
 plt.ylabel("grade")
 plt.show()
-################################################################################
-
-
-### your code here!  name your classifier object clf if you want the 
+###############################################################################
+### your code here!  name your classifier object clf if you want the
 ### visualization code (prettyPicture) to show you the decision boundary
 
+#%% adaboost
+from sklearn.metrics import accuracy_score
+from sklearn import ensemble
+
+clf = ensemble.AdaBoostClassifier(n_estimators=200, random_state=0, algorithm='SAMME')
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
 
 
+acc = accuracy_score(pred, labels_test)
+print(acc)
 
 
+try:
+    prettyPicture(clf, features_test, labels_test)
+except NameError:
+    pass
 
+#%% randomforest
+from sklearn.metrics import accuracy_score
+from sklearn import ensemble
+
+clf = ensemble.RandomForestClassifier(min_samples_split=15)
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+
+acc = accuracy_score(pred, labels_test)
+print(acc)
+
+
+try:
+    prettyPicture(clf, features_test, labels_test)
+except NameError:
+    pass
+
+
+#%% KNN
+from sklearn import neighbors
+from sklearn.metrics import accuracy_score
+
+clf = neighbors.KNeighborsClassifier(n_neighbors=4, algorithm='ball_tree')
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+acc = accuracy_score(pred, labels_test)
+print(acc)
 
 
 try:

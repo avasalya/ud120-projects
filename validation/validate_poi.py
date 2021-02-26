@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-
+#%%
 """
     Starter code for the validation mini-project.
     The first step toward building your POI identifier!
@@ -24,9 +24,46 @@ features_list = ["poi", "salary"]
 
 data = featureFormat(data_dict, features_list)
 labels, features = targetFeatureSplit(data)
+# print(len(features), len(labels))
+
+### it's all yours from here forward!
+from sklearn.cross_validation import train_test_split, StratifiedKFold
+import numpy as np 
+#%%
+
+features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.30, random_state=42)
+
+from sklearn import tree
+
+clf = tree.DecisionTreeClassifier()
+# clf = tree.DecisionTreeClassifier(min_samples_split=40)
+
+clf = clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+from sklearn.metrics import accuracy_score
+acc = accuracy_score(pred, labels_test)
+print(acc)
+
+#%%
+
+skf = StratifiedKFold(labels,n_folds=2, shuffle=True)
+# print(skf)
+for train_idx, test_idx in skf:
+    # print(train_idx, test_idx)
+    features_train, features_test = np.array(features)[train_idx.astype(int)], np.array(features)[test_idx.astype(int)]
+
+    labels_train, labels_test = np.array(labels)[train_idx.astype(int)], np.array(labels)[test_idx.astype(int)]
 
 
+from sklearn import tree
 
-### it's all yours from here forward!  
+clf = tree.DecisionTreeClassifier()
 
+clf = clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+from sklearn.metrics import accuracy_score
+acc = accuracy_score(pred, labels_test)
+print(acc)
 

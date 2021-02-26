@@ -1,10 +1,12 @@
 #!/usr/bin/python
-
+#%%
 import random
 import numpy
 import matplotlib.pyplot as plt
 import pickle
 
+from sklearn import linear_model
+from sklearn.metrics import mean_absolute_error
 from outlier_cleaner import outlierCleaner
 
 
@@ -26,13 +28,15 @@ ages_train, ages_test, net_worths_train, net_worths_test = train_test_split(ages
 ### fill in a regression here!  Name the regression object reg so that
 ### the plotting code below works, and you can see what your regression looks like
 
+reg = linear_model.LinearRegression()
+reg.fit(ages_train, net_worths_train)
 
+print('coef', reg.coef_)
+print('intercept', reg.intercept_)
+print('r*r', reg.score(ages_test, net_worths_test))
 
-
-
-
-
-
+pred = reg.predict(ages_test)
+print('mean abs error (MAE)', mean_absolute_error(net_worths_test, pred))
 
 
 
@@ -44,6 +48,7 @@ plt.scatter(ages, net_worths)
 plt.show()
 
 
+
 ### identify and remove the most outlier-y points
 cleaned_data = []
 try:
@@ -52,9 +57,6 @@ try:
 except NameError:
     print "your regression object doesn't exist, or isn't name reg"
     print "can't make predictions to use in identifying outliers"
-
-
-
 
 
 
@@ -82,3 +84,7 @@ if len(cleaned_data) > 0:
 else:
     print "outlierCleaner() is returning an empty list, no refitting to be done"
 
+
+print('coef', reg.coef_)
+print('intercept', reg.intercept_)
+print('r*r', reg.score(ages_test, net_worths_test))
