@@ -1,0 +1,25 @@
+name: p2
+channels:
+  - soumith
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=main
+  - ca-certificates=2021.1.19=h06a4308_0
+  - certifi=2020.6.20=pyhd3eb1b0_3
+  - libedit=3.1.20191231=h14c3975_1
+  - libffi=3.2.1=hf484d3e_1007
+  - libgcc-ng=9.1.0=hdf63c60_0
+  - libstdcxx-ng=9.1.0=hdf63c60_0
+  - ncurses=6.2=he6710b0_1
+  - openssl=1.1.1i=h27cfd23_0
+  - pip=19.3.1=py27_0
+  - python=2.7.16=h9bab390_7
+  - readline=7.0=h7b6447c_5
+  - setuptools=44.0.0=py27_0
+  - sqlite=3.33.0=h62c20be_0
+  - tk=8.6.10=hbc83047_0
+  - wheel=0.36.2=pyhd3eb1b0_0
+  - zlib=1.2.11=h7b6447c_3
+  - pip:
+    - scikit-learn==0.16.0
+prefix: /home/ash/anaconda3/envs/p2
